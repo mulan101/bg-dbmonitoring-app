@@ -1,44 +1,70 @@
 import { DeleteButton, LinkButton, VerticalGroup } from '@grafana/ui';
-import { PLUGIN_BASE_URL, ROUTES } from '../../constants';
+import { API_SERVER_URL, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 import * as React from 'react';
+import { useFetchList } from 'components/hooks/useFetch';
+import { config } from '@grafana/runtime';
 
+export interface Report {
+  custId: string;
+  dbId: string;
+  dbName: string; // 대시보드명
+  reportId: string;
+  reportName: string; // 리포트명
+  type: string; //  스케줄 타입
+  rtime: number; // 스케줄 시간
+  rtimeKst: string; // 스케줄 시간
+  rday: string; // 스케줄 요일 -> 
+  rdate: number; // ?
+  searchAdd: string; //부가 조건
+  searchFrom: string; // 시작 날짜 조건
+  searchTo: string; // 종료 날짜 조건
+  lastReportFile: string; // ?
+  lastSuccessTime: string; // ?
+  mkDate: string // ?
+}
 export const ReportList = () => {
 
-    function onDelete() {
-        if(window.confirm("삭제 하시겠습니까?")) {
-            alert("Deleted")
-        }
-    }
-    return (
-        <>
-            <h3>리포트 조회</h3>
-            <div className="text-right">
-              <LinkButton href={`${PLUGIN_BASE_URL}/${ROUTES.ReportRegist}`}>
-                등록
-              </LinkButton>
-            </div>
+  console.log("리포트 조회")
+  
+  const custId = config.bootData.user.orgId
+  const reports: Report[] = useFetchList(`${API_SERVER_URL}/dms/v1/custs/${custId}/dashboards/reports`)
 
-            <div className="admin-list-table">
-              <VerticalGroup spacing="md">
-                <table className="filter-table filter-table--hover form-inline">
-                  <thead>
-                    <tr>
-                      <th>리포트명</th>
-                      <th>대시보드명</th>
-                      <th>발송타입</th>
-                      <th style={{ width: '1%' }} />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr key="11111">
+  function onDelete() {
+      if(window.confirm("삭제 하시겠습니까?")) {
+          alert("Deleted")
+      }
+  }
+  return (
+      <>
+          <h3>리포트 조회</h3>
+          <div className="text-right">
+            <LinkButton href={`${PLUGIN_BASE_URL}/${ROUTES.ReportRegist}`}>
+              등록
+            </LinkButton>
+          </div>
+
+          <div className="admin-list-table">
+            <VerticalGroup spacing="md">
+              <table className="filter-table filter-table--hover form-inline">
+                <thead>
+                  <tr>
+                    <th>대시보드 명</th>
+                    <th>리포트 명</th>
+                    <th>스케줄 타입</th>
+                    <th style={{ width: '1%' }} />
+                  </tr>
+                </thead>
+                <tbody>
+                  {reports.map(report => (
+                    <tr key={report.reportId}>
                         <td className="link-td">
-                            <a href="#">test1</a>
+                        <a href={`${PLUGIN_BASE_URL}/${ROUTES.ReportRegist}/${report.dbId}/${report.reportId}`}>{report.dbName}</a>
                         </td>
                         <td className="link-td">
-                            <a href="#">test1</a>
+                          {report.reportName}
                         </td>
                         <td className="link-td">
-                            <a href="#">일</a>
+                            {report.type === 'daliy' ? '일' : (report.type === 'weekly' ? '주' : '월')}
                         </td>
                         <td className="text-right">
                             <DeleteButton
@@ -47,10 +73,11 @@ export const ReportList = () => {
                             />
                         </td>
                     </tr>
-                  </tbody>
-                </table>
-              </VerticalGroup>
-            </div>
-          </>
-    );
+                  ))}
+                </tbody>
+              </table>
+            </VerticalGroup>
+          </div>
+        </>
+  );
 }

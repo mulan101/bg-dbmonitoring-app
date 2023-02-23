@@ -14,9 +14,11 @@ export const Routes = () => {
     <Switch>
       <Route exact path={prefixRoute(ROUTES.Report)} component={ReportList} />
       <Route exact path={prefixRoute(ROUTES.ReportRegist)} component={ReportRegist} />
+      <Route exact path={`${prefixRoute(ROUTES.ReportRegist)}/:dbId/:reportId`} component={ReportRegist} />
       <Route exact path={prefixRoute(ROUTES.User)} component={UserList} />
       <Route exact path={prefixRoute(ROUTES.UserRegist)} component={UserRegist} />
       <Route exact path={prefixRoute(ROUTES.DashboardRegist)} component={DashboardRegist} />
+      <Route exact path={`${prefixRoute(ROUTES.DashboardRegist)}/:dbId`} component={DashboardRegist} />
       <Route component={DashboardList} />
     </Switch>
   );
