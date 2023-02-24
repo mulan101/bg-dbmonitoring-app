@@ -2,7 +2,7 @@ import { NavModelItem } from '@grafana/data';
 import pluginJson from './plugin.json';
 
 export const PLUGIN_BASE_URL = `/a/${pluginJson.id}`;
-export const API_SERVER_URL = 'http://13.209.126.167:7001'
+export const API_SERVER_URL = 'https://13.209.126.167:7001'
 
 export enum ROUTES {
   Dashboard = 'dashboard',
