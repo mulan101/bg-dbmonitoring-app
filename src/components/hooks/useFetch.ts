@@ -30,7 +30,5 @@ export function useFetch(url: string, key: string) {
         }
     }, [url, key]);
 
-    
-
     return data
 }

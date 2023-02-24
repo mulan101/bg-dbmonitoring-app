@@ -37,7 +37,7 @@
     {
       "type": "page",
       "name": "리포트 사용자 관리",
-      "path": "/a/%PLUGIN_ID%/report_user",
+      "path": "/a/%PLUGIN_ID%/user",
       "role": "Admin",
       "addToNav": true,
       "defaultNav": false

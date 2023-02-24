@@ -62,12 +62,10 @@ export const ReportRegist = () => {
         }
       })
     }
-    
   }, [type, report, moment]);
 
   // Input 핸들러
   const handleChange = (e: any) => {
-    console.log(reportState)
     const pattern = new RegExp('[0-9]{2}:[0-9]{2}');
     if(e.target.name === "rtimeKst" && pattern.test(e.target.value) ) {
       const timeUTC = moment(e.target.value, "HH:mm").add(-9,"h").format("HHmm");
@@ -78,14 +76,14 @@ export const ReportRegist = () => {
           rtime: timeUTC
         }
       })
-    } else {}
+    } else {
       setReportState((prevState: any) => {
         return { 
           ...prevState, 
           [e.target.name]: e.target.value 
         }
       })
-    
+    }
   }
 
   //등록 버튼 클릭

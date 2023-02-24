@@ -29,10 +29,17 @@ export const ReportList = () => {
   const custId = config.bootData.user.orgId
   const reports: Report[] = useFetchList(`${API_SERVER_URL}/dms/v1/custs/${custId}/dashboards/reports`)
 
-  function onDelete() {
-      if(window.confirm("삭제 하시겠습니까?")) {
-          alert("Deleted")
-      }
+  function onDelete(dashboardId: string, reportId: string) {
+    if(window.confirm("리포트 삭제 시 연결된 리포트 사용자 정보가 모두 삭제됩니다. \n삭제 하시겠습니까?")) {
+      fetch(`${API_SERVER_URL}/dms/v1/custs/${custId}/dashboards/${dashboardId}/reports/${reportId}`, {
+        method: "DELETE",
+      }).then(res => {
+        if (res.ok) {
+          alert("삭제가 완료 되었습니다");
+          location.reload();
+        }
+      })
+    }
   }
   return (
       <>
@@ -58,7 +65,7 @@ export const ReportList = () => {
                   {reports.map(report => (
                     <tr key={report.reportId}>
                         <td className="link-td">
-                        <a href={`${PLUGIN_BASE_URL}/${ROUTES.ReportRegist}/${report.dbId}/${report.reportId}`}>{report.dbName}</a>
+                          <a href={`${PLUGIN_BASE_URL}/${ROUTES.ReportRegist}/${report.dbId}/${report.reportId}`}>{report.dbName}</a>
                         </td>
                         <td className="link-td">
                           {report.reportName}
@@ -69,7 +76,7 @@ export const ReportList = () => {
                         <td className="text-right">
                             <DeleteButton
                             size="sm"
-                            onConfirm={onDelete}
+                            onConfirm={() => onDelete(report.dbId, report.reportId)}
                             />
                         </td>
                     </tr>
