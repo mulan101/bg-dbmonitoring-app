@@ -121,7 +121,7 @@ export const UserRegist = () => {
                   />
               </Field>
               <Field label="이메일">
-                <Input name="email" onChange={handleChange} value={userState.email} placeholder="test@gmai.com" pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*" disabled={!type} required/>
+                <Input name="email" onChange={handleChange} value={userState.email} placeholder="test@gmai.com" pattern="[a-zA-Z0-9\._-]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]*" disabled={!type} required/>
               </Field>
               <div className="gf-form-button-row">
                 <Button type="submit" variant="primary">
