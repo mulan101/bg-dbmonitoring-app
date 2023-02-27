@@ -142,11 +142,26 @@ export const ReportRegist = () => {
                   options={types}
                   onChange={v => {
                     setReportState((prevState: any) => {
+                      const typeValue = v.value;
+                      let pSearchFrom = "";
+                      let pSearchTo = "";
+                      if(typeValue === "daliy") {
+                        pSearchFrom = "now-1d%2Fd"
+                        pSearchTo = "now-1d%2Fd"
+                      } else if(typeValue === "weekly") {
+                        pSearchFrom = "now-1w%2Fw"
+                        pSearchTo = "now-1w%2Fw"
+                      } else {
+                        pSearchFrom = "now-1M%2FM"
+                        pSearchTo = "now-1M%2FM"
+                      }
                       return {
                         ...prevState, 
                         type: v.value,
                         rday: "",
-                        rdate: ""
+                        rdate: "",
+                        searchFrom: pSearchFrom,
+                        searchTo: pSearchTo
                       }
                     })
                   }}
@@ -186,7 +201,7 @@ export const ReportRegist = () => {
                 </Field>
               }
               <Field label="부가조건">
-                <Input name="searchAdd" onChange={handleChange} value={reportState.searchAdd} required/>
+                <Input name="searchAdd" onChange={handleChange} value={reportState.searchAdd}/>
               </Field>
               <Field label="시작 날짜 조건">
                 <Input name="searchFrom" onChange={handleChange} value={reportState.searchFrom} required/>
