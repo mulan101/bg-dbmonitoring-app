@@ -9,7 +9,7 @@ import { Dashboard } from 'pages/dashboard/DashboardList';
 import { API_SERVER_URL, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 
 const types = [
-  { label: '일', value: "daliy"},
+  { label: '일', value: "daily"},
   { label: '주', value: "weekly"},
   { label: '월', value: "monthly"}
 ];
@@ -145,7 +145,7 @@ export const ReportRegist = () => {
                       const typeValue = v.value;
                       let pSearchFrom = "";
                       let pSearchTo = "";
-                      if(typeValue === "daliy") {
+                      if(typeValue === "daily") {
                         pSearchFrom = "now-1d%2Fd"
                         pSearchTo = "now-1d%2Fd"
                       } else if(typeValue === "weekly") {

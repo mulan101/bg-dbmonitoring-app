@@ -71,7 +71,7 @@ export const ReportList = () => {
                           {report.reportName}
                         </td>
                         <td className="link-td">
-                            {report.type === 'daliy' ? '일' : (report.type === 'weekly' ? '주' : '월')}
+                            {report.type === 'daily' ? '일' : (report.type === 'weekly' ? '주' : '월')}
                         </td>
                         <td className="text-right">
                             <DeleteButton
