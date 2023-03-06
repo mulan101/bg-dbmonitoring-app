@@ -1,4 +1,4 @@
-import { DeleteButton, LinkButton, VerticalGroup } from '@grafana/ui';
+import { Button, DeleteButton, LinkButton, VerticalGroup } from '@grafana/ui';
 import { API_SERVER_URL, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 import * as React from 'react';
 import { useFetchList } from 'components/hooks/useFetch';
@@ -27,7 +27,27 @@ export const ReportList = () => {
   console.log("리포트 조회")
   
   const custId = config.bootData.user.orgId
+  const moment = require("moment");
   const reports: Report[] = useFetchList(`${API_SERVER_URL}/dms/v1/custs/${custId}/dashboards/reports`)
+
+  function handleDownload(downloadUrl: string, filename: string) {
+    fetch(downloadUrl, {
+      method: "GET"
+    }).then(res => {
+      return res.blob()
+    }).then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.target = "_blank"
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    });
+    
+  }
 
   function onDelete(dashboardId: string, reportId: string) {
     if(window.confirm("리포트 삭제 시 연결된 리포트 사용자 정보가 모두 삭제됩니다. \n삭제 하시겠습니까?")) {
@@ -58,6 +78,8 @@ export const ReportList = () => {
                     <th>대시보드 명</th>
                     <th>리포트 명</th>
                     <th>스케줄 타입</th>
+                    <th>최종 완료 일자</th>
+                    <th>최종 발송 레포트</th>
                     <th style={{ width: '1%' }} />
                   </tr>
                 </thead>
@@ -72,6 +94,16 @@ export const ReportList = () => {
                         </td>
                         <td className="link-td">
                             {report.type === 'daily' ? '일' : (report.type === 'weekly' ? '주' : '월')}
+                        </td>
+                        <td className="link-td">
+                            {
+                              report.lastSuccessTime && moment(report.lastSuccessTime, "YYYY-MM-DD[T]HH:mm:ss").add(9,"h").format("YYYY-MM-DD HH:mm:ss")
+                            }
+                        </td>
+                        <td>
+                            {
+                              report.lastSuccessTime && <Button size='xs' icon="file-alt" onClick={()=>handleDownload(`${API_SERVER_URL}/dms/v1/custs/${custId}/files/${report.lastReportFile}`, report.lastReportFile)}></Button>
+                            }
                         </td>
                         <td className="text-right">
                             <DeleteButton

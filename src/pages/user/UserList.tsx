@@ -1,4 +1,4 @@
-import { Button, DeleteButton, LinkButton, VerticalGroup } from '@grafana/ui';
+import { DeleteButton, LinkButton, VerticalGroup } from '@grafana/ui';
 import { API_SERVER_URL, PLUGIN_BASE_URL, ROUTES } from '../../constants';
 import * as React from 'react';
 import { config } from '@grafana/runtime';
@@ -54,7 +54,6 @@ export const UserList = () => {
                       <th>리포트 명</th>
                       <th>이메일</th>
                       <th>최종 발송일자</th>
-                      <th>최종 발송 레포트</th>
                       <th style={{ width: '1%' }} />
                     </tr>
                   </thead>
@@ -73,11 +72,6 @@ export const UserList = () => {
                         <td className="link-td">
                             {
                               user.lastSentTime && moment(user.lastSentTime, "YYYY-MM-DD[T]HH:mm:ss").add(9,"h").format("YYYY-MM-DD HH:mm:ss")
-                            }
-                        </td>
-                        <td>
-                            {
-                              user.lastSentTime && <Button size='xs' icon="file-alt" onClick={()=>console.log("download click")}></Button>
                             }
                         </td>
                         <td className="text-right">
