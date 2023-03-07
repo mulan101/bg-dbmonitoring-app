@@ -71,12 +71,21 @@ export const UserRegist = () => {
             "Content-Type": "application/json"
           },
           body: request_body,
-        }).then(res => {
+        })
+        .then(res => {
           if (res.ok) {
             alert("완료 되었습니다");
-            setIsLoading(false);
             history.push(`${PLUGIN_BASE_URL}/${ROUTES.User}`)
+            return
+          } else {
+            return res.json()
+          }  
+        })
+        .then(data => {
+          if(data.code === "DUPLICATED") {
+            alert("대시보드/리포트/이메일 정보가 이미 등록되었습니다.")
           }
+          setIsLoading(false);
         });
     }
   }
